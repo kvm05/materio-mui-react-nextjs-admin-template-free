@@ -22,7 +22,7 @@ const MenuHeaderWrapper = styled(Box)(({ theme }) => ({
 const HeaderTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   lineHeight: 'normal',
-  textTransform: 'uppercase',
+  // textTransform: 'uppercase',
   color: theme.palette.text.primary,
   transition: 'opacity .25s ease-in-out, margin .25s ease-in-out'
 }))
@@ -36,10 +36,10 @@ const StyledLink = styled('a')({
 const VerticalNavHeader = props => {
   // ** Props
   const { verticalNavMenuBranding: userVerticalNavMenuBranding } = props
-
+  console.log(props.settings.mode);
   // ** Hooks
   const theme = useTheme()
-
+  console.log(themeConfig.mode)
   return (
     <MenuHeaderWrapper className='nav-header' sx={{ pl: 6 }}>
       {userVerticalNavMenuBranding ? (
@@ -47,7 +47,7 @@ const VerticalNavHeader = props => {
       ) : (
         <Link href='/' passHref>
           <StyledLink>
-            <svg
+            {/* <svg
               width={30}
               height={25}
               version='1.1'
@@ -105,7 +105,10 @@ const VerticalNavHeader = props => {
                   </g>
                 </g>
               </g>
-            </svg>
+            </svg> */}
+            {props.settings.mode === 'light'?<img 
+              width={30}
+              src='/images/icon.png'/> : <img width={30} src='/images/iconwhite.png'/>}
             <HeaderTitle variant='h6' sx={{ ml: 3 }}>
               {themeConfig.templateName}
             </HeaderTitle>

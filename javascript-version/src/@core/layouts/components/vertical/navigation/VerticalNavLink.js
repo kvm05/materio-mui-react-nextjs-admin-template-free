@@ -49,7 +49,8 @@ const MenuItemTextMetaWrapper = styled(Box)({
 const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
   // ** Hooks
   const router = useRouter()
-  const IconTag = item.icon
+  console.log(item)
+  const IconTag = item?.icon
 
   const isNavLinkActive = () => {
     if (router.pathname === item.path || handleURLQueries(router, item.path)) {

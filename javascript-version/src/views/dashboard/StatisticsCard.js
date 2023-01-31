@@ -27,24 +27,12 @@ const salesData = [
     title: 'Customers',
     color: 'success',
     icon: <AccountOutline sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '1.54k',
-    color: 'warning',
-    title: 'Products',
-    icon: <CellphoneLink sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '$88k',
-    color: 'info',
-    title: 'Revenue',
-    icon: <CurrencyUsd sx={{ fontSize: '1.75rem' }} />
   }
 ]
 
 const renderStats = () => {
   return salesData.map((item, index) => (
-    <Grid item xs={12} sm={3} key={index}>
+    <Grid item xs={12} sm={6} key={index}>
       <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar
           variant='rounded'

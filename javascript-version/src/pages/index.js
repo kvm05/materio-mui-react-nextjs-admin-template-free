@@ -21,20 +21,33 @@ import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
+import RevenueChart from 'src/views/dashboard/RevenueChart'
+import ParticipantChart from 'src/views/dashboard/ParticipantChart'
+import UsersChart from 'src/views/dashboard/UsersChart'
+
+
 
 const Dashboard = () => {
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
-        <Grid item xs={12} md={4}>
-          <Trophy />
+        <Grid item xs={12}>
+          <Grid container spacing={6}>
+            <Grid item xs={12} md={4} sx={{height:"100%"}}>
+              <ParticipantChart />
+            </Grid>
+            <Grid item xs={12} md={4} sx={{height:"100%"}}>
+              <UsersChart />
+            </Grid>
+            <Grid item xs={12} md={4} sx={{height:"100%"}}>
+              <RevenueChart/>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={8}>
-          <StatisticsCard />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        {/* <Grid item xs={12} md={6} lg={4}>
           <WeeklyOverview />
         </Grid>
+
         <Grid item xs={12} md={6} lg={4}>
           <TotalEarning />
         </Grid>
@@ -89,7 +102,7 @@ const Dashboard = () => {
         </Grid>
         <Grid item xs={12} md={12} lg={8}>
           <DepositWithdraw />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12}>
           <Table />
         </Grid>

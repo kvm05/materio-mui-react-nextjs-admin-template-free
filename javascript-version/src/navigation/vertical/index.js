@@ -9,69 +9,35 @@ import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
+import { eventListContext } from 'src/@core/context/eventsContext'
+import { useContext } from 'react'
 
 const navigation = () => {
-  return [
-    {
-      title: 'Dashboard',
+  const {eventList, updateEventList} = useContext(eventListContext)
+  console.log(eventList)
+  let eventLinks = []
+  eventList.forEach((obj) => {
+    let linkObj = {}
+    linkObj.title = obj.name
+    linkObj.icon = AccountCogOutline
+    linkObj.path = '/events/'+obj.slug
+    eventLinks.push(linkObj)
+  })
+  let sidebar = [{
+      title: 'Overview',
       icon: HomeOutline,
       path: '/'
     },
     {
-      title: 'Account Settings',
+      title: 'Users',
       icon: AccountCogOutline,
-      path: '/account-settings'
+      path: '/users'
     },
     {
-      sectionTitle: 'Pages'
-    },
-    {
-      title: 'Login',
-      icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
-    },
-    {
-      title: 'Register',
-      icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
-    },
-    {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
-    },
-    {
-      sectionTitle: 'User Interface'
-    },
-    {
-      title: 'Typography',
-      icon: FormatLetterCase,
-      path: '/typography'
-    },
-    {
-      title: 'Icons',
-      path: '/icons',
-      icon: GoogleCirclesExtended
-    },
-    {
-      title: 'Cards',
-      icon: CreditCardOutline,
-      path: '/cards'
-    },
-    {
-      title: 'Tables',
-      icon: Table,
-      path: '/tables'
-    },
-    {
-      icon: CubeOutline,
-      title: 'Form Layouts',
-      path: '/form-layouts'
-    }
-  ]
+      sectionTitle: 'Events'
+    }] 
+  sidebar.push(...eventLinks)
+  return sidebar
 }
 
 export default navigation

@@ -21,6 +21,9 @@ import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsCo
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 
+import { EventsContext } from 'src/@core/context/eventsContext'
+import { UserProvider } from 'src/@core/context/userContext'
+
 // ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
@@ -52,7 +55,7 @@ const App = props => {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
+        <title>{`Oculus Admin`}</title>
         <meta
           name='description'
           content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
@@ -60,14 +63,17 @@ const App = props => {
         <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-
-      <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
+      <UserProvider>
+        <EventsContext>
+          <SettingsProvider>
+            <SettingsConsumer>
+              {({ settings }) => {
+                return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+              }}
+            </SettingsConsumer>
+          </SettingsProvider>
+        </EventsContext>
+      </UserProvider>
     </CacheProvider>
   )
 }

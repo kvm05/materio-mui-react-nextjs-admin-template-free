@@ -21,14 +21,12 @@ import { styled, useTheme } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useUser } from 'src/@core/context/userContext'
 
 // ** Icons Imports
 import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
+
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
@@ -38,6 +36,8 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import axios from 'axios'
+import app from 'src/misc/firebase'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -79,13 +79,48 @@ const LoginPage = () => {
   const handleMouseDownPassword = event => {
     event.preventDefault()
   }
+  const {user, login} = useUser();
+  const startGoogleSignIn = () => {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth(app);
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        auth.currentUser.getIdToken()
+          .then(async (token) => {
+            const res = await axios.post('https://nginx-varun-dhruv.cloud.okteto.net/api/auth/v1/user', {}, {
+              headers: {
+                'Authorization': 'Bearer ' + token
+              }
+            })
+            
+            login({
+              google_token: token,
+              access_token: res.data.token,
+              ...res.data.user
+            }, res.data.token)
+            console.log(res.data.user)
+            router.push('/')
+            if(res.data.user.role === "admin" ){
+              console.log("Admin")
+            }
+          })
+      }).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(error)
+      });
+  }
 
   return (
-    <Box className='content-center'>
-      <Card sx={{ zIndex: 1 }}>
+    <Box className='content-center' >
+      <Card sx={{ zIndex: 1, width: "40% !important" }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg
+            {/* <svg
               width={35}
               height={29}
               version='1.1'
@@ -143,28 +178,24 @@ const LoginPage = () => {
                   </g>
                 </g>
               </g>
-            </svg>
+            </svg> */}
+            <img 
+              width={50}
+              src='/images/icon.png'/>
             <Typography
               variant='h6'
               sx={{
                 ml: 3,
                 lineHeight: 1,
                 fontWeight: 600,
-                textTransform: 'uppercase',
-                fontSize: '1.5rem !important'
+                fontSize: '2rem !important'
               }}
             >
               {themeConfig.templateName}
             </Typography>
           </Box>
-          <Box sx={{ mb: 6 }}>
-            <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
-              Welcome to {themeConfig.templateName}! 👋🏻
-            </Typography>
-            <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
-          </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            {/* <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -186,8 +217,8 @@ const LoginPage = () => {
                   </InputAdornment>
                 }
               />
-            </FormControl>
-            <Box
+            </FormControl> */}
+            {/* <Box
               sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
               <FormControlLabel control={<Checkbox />} label='Remember Me' />
@@ -203,8 +234,8 @@ const LoginPage = () => {
               onClick={() => router.push('/')}
             >
               Login
-            </Button>
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+            </Button> */}
+            {/* <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Typography variant='body2' sx={{ marginRight: 2 }}>
                 New on our platform?
               </Typography>
@@ -213,31 +244,31 @@ const LoginPage = () => {
                   <LinkStyled>Create an account</LinkStyled>
                 </Link>
               </Typography>
-            </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
+            </Box> */}
+            {/* <Divider sx={{ my: 5 }}>or</Divider> */}
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Link href='/' passHref>
+              {/* <Link href='/' passHref>
                 <IconButton component='a' onClick={e => e.preventDefault()}>
                   <Facebook sx={{ color: '#497ce2' }} />
                 </IconButton>
-              </Link>
-              <Link href='/' passHref>
+              </Link> */}
+              {/* <Link href='/' passHref>
                 <IconButton component='a' onClick={e => e.preventDefault()}>
                   <Twitter sx={{ color: '#1da1f2' }} />
                 </IconButton>
-              </Link>
-              <Link href='/' passHref>
+              </Link> */}
+              {/* <Link href='/' passHref>
                 <IconButton component='a' onClick={e => e.preventDefault()}>
                   <Github
                     sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
                   />
                 </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={e => e.preventDefault()}>
-                  <Google sx={{ color: '#db4437' }} />
-                </IconButton>
-              </Link>
+              </Link> */}
+                <Button onClick={startGoogleSignIn} sx={{backgroundColor: "red", color:"white", marginRight: 3, padding:3, "&:hover":{
+                  color: "red"
+                }}}>
+                  <Google sx={{marginRight: 3}}/> Sign In by Google
+                </Button>
             </Box>
           </form>
         </CardContent>
